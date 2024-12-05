@@ -45,7 +45,7 @@ export interface ChannelsData {
 
 const Popular = () => {
     const videosQueryParams = new URLSearchParams({
-        'part': 'snippet',
+        'part': 'snippet, statistics',
         'chart': 'mostPopular',
         'maxResults': '30'
     }).toString();
@@ -57,23 +57,23 @@ const Popular = () => {
     const lastItemRef = useInfiniteScroll(fetchNextPage, hasNextPage, isFetchingNextPage);
 
     return (
-        <div className='w-80% bg-red-500 flex flex-wrap float-right'>
+        <div className='w-80% flex flex-wrap float-right'>
             {
-                videos?.pages.map(page => page.items.map((video, index) => {
-                    
-                    return (
-                        <>  
-                            <Card 
-                                key={video.id}
-                                channelImage={channels.length > 0 && channels?.find(channel => channel.id == video.snippet.channelId)?.snippet.thumbnails.default.url as string || ''}
-                                channelTitle= {channels.length > 0 && channels?.find(channel => channel.id == video.snippet.channelId)?.snippet.title as string || ''} 
-                                title={video.snippet.title} 
-                                thumbnail={video.snippet.thumbnails.high.url} 
-                            />
-                            { index === page.items.length - 1 && <div ref={lastItemRef} /> }
-                        </>
-                    )
-                }))
+                videos?.pages.map(page => page.items.map((video, index) => (
+                    <>
+                        <Card 
+                            key={video.id}
+                            channelImage={channels.length > 0 && channels?.find(channel => channel.id == video.snippet.channelId)?.snippet.thumbnails.default.url as string || ''}
+                            channelTitle= {channels.length > 0 && channels?.find(channel => channel.id == video.snippet.channelId)?.snippet.title as string || ''} 
+                            publishedAt={video.snippet.publishedAt}
+                            title={video.snippet.title} 
+                            thumbnail={video.snippet.thumbnails.high.url} 
+                            videoId={video.id}
+                            views={video.statistics.viewCount}
+                        />
+                        { index === page.items.length - 1 && <div ref={lastItemRef} /> }
+                    </>
+                )))
             }
         </div>
     )
