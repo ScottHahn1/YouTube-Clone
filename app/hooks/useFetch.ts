@@ -1,4 +1,3 @@
-// 'use client';
 import { QueryFunctionContext, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 const useFetch = <T>(url: string, queryKey: string[], enabled: boolean) => {
@@ -7,13 +6,13 @@ const useFetch = <T>(url: string, queryKey: string[], enabled: boolean) => {
         return res.json();
     };
 
-    const { data } = useQuery<T>({
+    const { data, isLoading, error } = useQuery<T>({
         queryKey: queryKey,
         queryFn: fetchData,
         enabled: enabled
     });
 
-    return { data };
+    return { data, isLoading, error };
 }
 
 const useFetchInfinite = <T extends { nextPageToken: string }>(url: string, queryKey: string[]) => {
