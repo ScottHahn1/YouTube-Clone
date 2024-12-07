@@ -1,5 +1,7 @@
+'use client';
 import { formatDate, formatNumbers } from '@/app/utils/formatter';
 import Image from 'next/image'
+import Link from 'next/link';
 
 interface Props {
   channelImage?: string;
@@ -16,7 +18,9 @@ const Card = ({ channelImage, channelTitle, publishedAt, title, thumbnail, video
   return (
     <div className='w-1/3 flex flex-col border border-solid border-white'>
         <div className='relative w-full h-0 pb-56%'>
-          <Image className='p-1 rounded-3xl object-cover' fill src={thumbnail} alt={`${title} video thumbnail`} />
+          <Link href={`/watch/${videoId}`}>
+            <Image className='p-1 rounded-3xl object-cover' fill src={thumbnail} alt={`${title} video thumbnail`} />
+          </Link>
         </div>
         <div className='flex gap-3'>
           { channelImage && <Image className='rounded-full w-10 h-10' src={channelImage} width={30} height={30} alt={`${channelTitle}'s channel image`} /> }
