@@ -14,11 +14,11 @@ interface Channels {
     }
 }
 
-const useChannels = (channelIds: string[]) => {
+const useChannels = (channelIds: string[] | string) => {
     const [channels, setChannels] = useState<Channels[]>([]);
 
     const channelsQueryParams = new URLSearchParams({
-        'id': channelIds?.join(',') as string,
+        'id': Array.isArray(channelIds) ? channelIds?.join(',') : channelIds,
         'part': 'snippet',
         'maxResults': '30'
     }).toString();
