@@ -5,7 +5,7 @@ export async function GET(req: Request) {
     const params = url.searchParams.toString();
 
     try {
-      const response = await fetch(`https://youtube.googleapis.com/youtube/v3/videos?${params}&key=${process.env.API_KEY}`);
+        const response = await fetch(`https://youtube.googleapis.com/youtube/v3/videos?${params}&key=${process.env.API_KEY}`);
         const data = await response.json();
         return NextResponse.json(data, { status: 200 });
       } catch (error) {
