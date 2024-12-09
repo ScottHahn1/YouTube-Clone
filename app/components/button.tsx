@@ -7,12 +7,12 @@ interface Props {
     handleClick: () => void;
 }
 
-const button = ({ children, className, handleClick }: Props) => {
+const Button = ({ children, className, handleClick }: Props) => {
   return (
     <button className={className} onClick={handleClick}>
-        {children}
+      {children}
     </button>
   )
 }
 
-export default button
+export default Button;
