@@ -15,7 +15,7 @@ const useFetch = <T>(url: string, queryKey: string[], enabled: boolean) => {
     return { data, isLoading, error };
 }
 
-const useFetchInfinite = <T extends { nextPageToken: string }>(url: string, queryKey: string[]) => {
+const useFetchInfinite = <T extends { nextPageToken: string }>(url: string, queryKey: string[], enabled = true) => {
     const fetchData = async ({ pageParam = '' }: QueryFunctionContext) => {
         const fullUrl = pageParam ? `${url}&pageToken=${pageParam}` : url;
         const res = await fetch(fullUrl);
@@ -27,6 +27,7 @@ const useFetchInfinite = <T extends { nextPageToken: string }>(url: string, quer
         queryFn: fetchData,
         initialPageParam: '',
         getNextPageParam: (lastPage: T) => lastPage.nextPageToken,
+        enabled: enabled
     });
 
     return { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess };
