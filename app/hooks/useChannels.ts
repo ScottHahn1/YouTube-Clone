@@ -3,33 +3,52 @@ import { useFetch } from "@/app/hooks/useFetch";
 import { useEffect, useState } from "react";
 
 interface Channels {
-    id: string;
-    snippet: {
-        thumbnails: {
-            default: {
-                url: string;
-            }
-        }
-        title: string;
+  id: string;
+  brandingSettings: {
+    channel: {
+      description: string;
+      unsubscribedTrailer: string;
+    },
+    image: {
+      bannerExternalUrl: string;
     }
+  },
+  contentDetails: {
+    relatedPlaylists: {
+      uploads: string;
+    }
+  },
+  snippet: {
+    customUrl: string;
+    description: string;
+    thumbnails: {
+      high: {
+        url: string;
+      }
+    }
+    title: string;
+  },
+  statistics: {
+    subscriberCount: number;
+    videoCount: number;
+  }
 }
 
 const useChannels = (channelIds: string[] | string) => {
     const [channels, setChannels] = useState<Channels[]>([]);
-
+    
     const channelsQueryParams = new URLSearchParams({
-        'id': Array.isArray(channelIds) ? channelIds?.join(',') : channelIds,
-        'part': 'snippet',
-        'maxResults': '30'
+      'id': Array.isArray(channelIds) ? channelIds?.join(',') : channelIds,
+      'part': 'brandingSettings, contentDetails, snippet, statistics',
+      'maxResults': '30'
     }).toString();
 
-    const apiUrl = `http://localhost:3000/api/channels?${channelsQueryParams}`;
-    const { data: channelsData } = useFetch<ChannelsData>(apiUrl, ['channels', channelsQueryParams], !!channelIds.length);
-
+    const { data: channelsData } = useFetch<ChannelsData>(`/api/channels?${channelsQueryParams}`, ['channels', channelsQueryParams], !!channelIds.length);
+    
     useEffect(() => {
-        if (channelsData) {
-            setChannels(prev => [...prev, ...channelsData.items]);
-        }
+      if (channelsData) {
+        setChannels(prev => [...prev, ...channelsData.items]);
+      }
     }, [channelsData])
 
     return channels;
