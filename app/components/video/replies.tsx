@@ -2,6 +2,8 @@ import Button from "../button";
 import Image from "next/image";
 import { useFetchInfinite } from "@/app/hooks/useFetch";
 import { useState } from "react";
+import { FaThumbsUp } from "react-icons/fa";
+import { formatNumbers } from "@/app/utils/formatter";
 
 interface Props {
     parentCommentId: string;
@@ -31,7 +33,7 @@ const Replies = ({ parentCommentId, totalReplyCount }: Props) => {
         'maxResults': '30'
     }).toString();
 
-    const { data: replies, fetchNextPage, hasNextPage } = useFetchInfinite<Replies>(`http://localhost:3000/api/comments/replies?${repliesQueryParams}`, ['replies', parentCommentId], fetchData);
+    const { data: replies, fetchNextPage, hasNextPage } = useFetchInfinite<Replies>(`/api/comments/replies?${repliesQueryParams}`, ['replies', parentCommentId], fetchData);
 
     return (
         <div>
@@ -59,6 +61,10 @@ const Replies = ({ parentCommentId, totalReplyCount }: Props) => {
                         <div className='flex flex-col'>
                             <p>{reply.snippet.authorDisplayName}</p>
                             <p>{reply.snippet.textDisplay}</p>
+                            <div className='flex gap-3 items-center'>
+                                <FaThumbsUp />
+                                {formatNumbers(reply.snippet.likeCount)}
+                            </div>
                         </div>
                     </div>
                 ))
