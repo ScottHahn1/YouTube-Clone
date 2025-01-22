@@ -1,39 +1,46 @@
-'use client';
+// import { useVideoContext } from '@/app/contexts/videoContext';
 import { formatDate, formatNumbers } from '@/app/utils/formatter';
 import Image from 'next/image'
 import Link from 'next/link';
 
 interface Props {
-  channelImage?: string;
-  channelTitle?: string;
+  channelId: string;
+  channelImage: string;
+  channelTitle: string;
+  containerWidth: string;
+  playlistId?: string;
   publishedAt: string;
   title: string;
   thumbnail: string;
   videoId: string;
-  views: number;
+  views?: number;
 }
 
-const Card = ({ channelImage, channelTitle, publishedAt, title, thumbnail, videoId, views }: Props) => {
+const Card = ({ channelId, channelImage, channelTitle, containerWidth, playlistId, publishedAt, title, thumbnail, videoId, views }: Props) => {
+  const videoRoute = playlistId ? `/watch/${videoId}/${playlistId}` : `/watch/${videoId}`;
 
   return (
-    <div className='w-1/3 flex flex-col border border-solid border-white'>
+    <div className={`${containerWidth} flex flex-col`}>
         <div className='relative w-full h-0 pb-56%'>
-          <Link href={`/watch/${videoId}`}>
+          <Link href={videoRoute}>
             <Image className='p-1 rounded-3xl object-cover' fill src={thumbnail} alt={`${title} video thumbnail`} />
           </Link>
         </div>
         <div className='flex gap-3'>
-          { channelImage && <Image className='rounded-full w-10 h-10' src={channelImage} width={30} height={30} alt={`${channelTitle}'s channel image`} /> }
+          { 
+            channelImage && 
+            <Link href={`/channel/${channelId}`}>
+              <Image className='rounded-full w-10 h-10' src={channelImage} width={30} height={30} alt={`${channelTitle}'s channel image`} /> 
+            </Link>
+          }
           <div>
-            <p>
-              {title}
-            </p>
-            <p>
-              {channelTitle}
-            </p>
+            <p>{title}</p>
+            <Link href={`/channel/${channelId}`}>
+              <p>{channelTitle}</p>
+            </Link>
             <div className='flex gap-1 items-center'>
               <span>
-                {formatNumbers(views)} views
+                {views && formatNumbers(views)} views
               </span>
               <span className='text-4xl leading-none align-baseline mb-1'>
                 &#x00B7;
