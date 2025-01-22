@@ -9,7 +9,8 @@ const useFetch = <T>(url: string, queryKey: string[], enabled: boolean) => {
     const { data, isLoading, error } = useQuery<T>({
         queryKey: queryKey,
         queryFn: fetchData,
-        enabled: enabled
+        enabled: enabled,
+        staleTime: 300000 //5 minutes
     });
 
     return { data, isLoading, error };
@@ -27,7 +28,8 @@ const useFetchInfinite = <T extends { nextPageToken: string }>(url: string, quer
         queryFn: fetchData,
         initialPageParam: '',
         getNextPageParam: (lastPage: T) => lastPage.nextPageToken,
-        enabled: enabled
+        enabled: enabled,
+        staleTime: 300000 //5 minutes
     });
 
     return { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess };
