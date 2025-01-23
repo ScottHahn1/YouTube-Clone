@@ -1,0 +1,26 @@
+import { NextResponse } from "next/server";
+
+interface ChannelSections {
+  contentDetails: {
+    channels: string[];
+    playlists: string[];
+  },
+  snippet: {
+    type: string;
+  }
+}
+
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const params = url.searchParams;
+
+  try {
+    const response = await fetch(`https://www.googleapis.com/youtube/v3/channelSections?${params}&key=${process.env.API_KEY}`);
+      const data = await response.json();
+      const filteredData = data.items.filter((section: ChannelSections) => section.snippet.type !== 'channelsectiontypeundefined' && section.contentDetails);
+      return NextResponse.json(filteredData, { status: 200 });
+    } catch (error) {
+      console.error('Internal Server Error:', error);
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
