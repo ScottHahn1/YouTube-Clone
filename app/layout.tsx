@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import QueryClientContextProvider from "./query-client-provider";
+import NavbarSidebarWrapper from "./NavbarSidebarWrapper";
+import { ThemeProvider } from "./contexts/themeContext";
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { config } from '@fortawesome/fontawesome-svg-core';
+
+config.autoAddCss = false;
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,14 +30,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryClientContextProvider>
-          {children}
-        </QueryClientContextProvider>
+        <ThemeProvider>
+          <QueryClientContextProvider>
+            <NavbarSidebarWrapper />
+            {children}
+          </QueryClientContextProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
