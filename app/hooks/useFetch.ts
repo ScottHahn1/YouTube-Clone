@@ -1,3 +1,4 @@
+'use client';
 import { QueryFunctionContext, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 const useFetch = <T>(url: string, queryKey: string[], enabled: boolean) => {
