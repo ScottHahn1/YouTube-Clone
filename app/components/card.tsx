@@ -28,14 +28,14 @@ const Card = ({ channelId, channelImage, channelTitle, containerWidth, playlistI
         <div className='flex gap-3 pt-4'>
           { 
             channelImage && 
-            <Link href={`/channel/${channelId}`}>
+            <Link href={`/channel/${channelTitle}-${channelId}`}>
               <Image className='rounded-full' src={channelImage} width={50} height={50} alt={`${channelTitle}'s channel image`} /> 
             </Link>
           }
           <div>
-            <p>{title}</p>
-            <Link href={`/channel/${channelTitle}-${channelId}/home`}>
-              <p>{channelTitle}</p>
+            <p className='truncate w-48'>{title}</p>
+            <Link href={`/channel/${channelTitle}-${channelId}`}>
+              <p className='truncate w-48'>{channelTitle}</p>
             </Link>
             <div className='flex gap-1 items-center'>
               <span>
