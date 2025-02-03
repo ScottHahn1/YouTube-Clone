@@ -1,3 +1,4 @@
+'use client';
 import Button from "../button";
 import Image from "next/image";
 import { useFetchInfinite } from "@/app/hooks/useFetch";
