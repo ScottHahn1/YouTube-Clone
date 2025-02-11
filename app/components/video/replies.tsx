@@ -3,8 +3,9 @@ import Button from "../button";
 import Image from "next/image";
 import { useFetchInfinite } from "@/app/hooks/useFetch";
 import { useState } from "react";
-import { FaThumbsUp } from "react-icons/fa";
 import { formatNumbers } from "@/app/utils/formatter";
+import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface Props {
     parentCommentId: string;
@@ -63,7 +64,7 @@ const Replies = ({ parentCommentId, totalReplyCount }: Props) => {
                             <p>{reply.snippet.authorDisplayName}</p>
                             <p>{reply.snippet.textDisplay}</p>
                             <div className='flex gap-3 items-center'>
-                                <FaThumbsUp />
+                                <FontAwesomeIcon icon={faThumbsUp} />
                                 {formatNumbers(reply.snippet.likeCount)}
                             </div>
                         </div>
