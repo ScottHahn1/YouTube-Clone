@@ -1,8 +1,9 @@
 import { useFetchInfinite } from "@/app/hooks/useFetch";
 import Replies from "./replies";
 import Image from "next/image";
-import { FaChevronDown, FaThumbsUp } from "react-icons/fa";
+import { faChevronDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { formatNumbers } from "@/app/utils/formatter";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface Comments {
     id: string;
@@ -51,11 +52,12 @@ const CommentThreads = ({ videoId }: { videoId: string }) => {
                             <p>{comment.snippet.topLevelComment.snippet.authorDisplayName}</p>
                             <p>{comment.snippet.topLevelComment.snippet.textDisplay}</p>
                             <div className='flex gap-3 items-center'>
-                                <FaThumbsUp />
+                                <FontAwesomeIcon icon={faThumbsUp} />
                                 {formatNumbers(comment.snippet.topLevelComment.snippet.likeCount)}
                             </div>
                             <div className='flex items-center gap-3 pl-2'>
-                                <FaChevronDown className='text-blue-600' />
+                                {/* <FaChevronDown className='text-blue-600' /> */}
+                                <FontAwesomeIcon icon={faChevronDown} color='blue-600' />
                                 <Replies parentCommentId={comment.snippet.topLevelComment.id} totalReplyCount={comment.snippet.totalReplyCount} />
                             </div>
                         </div>
