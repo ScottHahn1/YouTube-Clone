@@ -8,13 +8,15 @@ const Navbar = () => {
 
     return (
         <nav className='h-20 flex justify-around items-center'>
-            <Image
-                src={theme === 'light' ? '/images/yt_logo_rgb_light.png' : '/images/yt_logo_rgb_dark.png'}
-                alt='YouTube Logo'
-                width={150}
-                height={10}
-                layout='fixed'
-            />
+            <div className="relative w-1/4 h-40%">
+                <Image
+                    src={theme === 'light' ? '/images/yt_logo_rgb_light.png' : '/images/yt_logo_rgb_dark.png'}
+                    alt='YouTube Logo'
+                    fill
+                    className='object-contain'
+                    priority
+                />
+            </div>
             <SearchBar />
             <Button 
                 children={ theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode' } 
