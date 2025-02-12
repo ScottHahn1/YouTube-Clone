@@ -1,17 +1,21 @@
-'use client';
-import { useParams } from "next/navigation";
 import WatchVideo from "../../components/video/watchVideo";
 
-const WatchVideoPage = () => {
-    const params = useParams();
-    const segments = params.segments || [];
+interface Props {
+    params: {
+        segments: string[];
+    };
+}
 
-    const videoId = segments[0]; // First segment is the video ID
-    const playlistId = segments[1] || null; // Second segment is the playlist ID
+const WatchVideoPage = async ({ params }: Props ) => {
+    const resolvedParams = await params;
+    const segments = resolvedParams?.segments;
+
+    const videoId = segments[0]; 
+    const playlistId = segments[1] || null;
 
     return (
-        <div>
-            <WatchVideo videoId={videoId as string} playlistId={playlistId as string} />
+        <div className='pl-4'>
+            <WatchVideo playlistId={playlistId as string} videoId={videoId as string} />
         </div>
     )
 }
