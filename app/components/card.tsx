@@ -20,36 +20,50 @@ const Card = ({ channelId, channelImage, channelTitle, containerWidth, playlistI
 
   return (
     <div className={`${containerWidth} flex flex-col`}>
-        <div className='relative w-full h-0 pb-56%'>
-          <Link href={videoRoute}>
-            <Image className='p-1 rounded-3xl object-cover' fill src={thumbnail} alt={`${title} video thumbnail`} />
+      <div className='relative w-full h-56'>
+        <Link href={videoRoute}>
+          <Image 
+            className='absolute p-1 rounded-3xl object-cover' 
+            fill 
+            src={thumbnail} 
+            alt={`${title} video thumbnail`} />
+        </Link>
+      </div>
+
+      <div className='flex gap-3 pt-4'>
+        { 
+          channelImage && 
+          <Link href={`/channel/${channelTitle}-${channelId}`}>
+            <Image 
+              className='rounded-full' 
+              src={channelImage} 
+              width={50} height={50} 
+              alt={`${channelTitle}'s channel image`} 
+            /> 
           </Link>
-        </div>
-        <div className='flex gap-3 pt-4'>
-          { 
-            channelImage && 
-            <Link href={`/channel/${channelTitle}-${channelId}`}>
-              <Image className='rounded-full' src={channelImage} width={50} height={50} alt={`${channelTitle}'s channel image`} /> 
-            </Link>
-          }
-          <div>
-            <p className='truncate w-48'>{title}</p>
-            <Link href={`/channel/${channelTitle}-${channelId}`}>
-              <p className='truncate w-48'>{channelTitle}</p>
-            </Link>
-            <div className='flex gap-1 items-center'>
-              <span>
-                {views && formatNumbers(views)} views
-              </span>
-              <span className='text-4xl leading-none align-baseline mb-1'>
-                &#x00B7;
-              </span>
-              <span>
-                {formatDate(publishedAt)}
-              </span>
-            </div>
+        }
+
+        <div className='min-w-0'>
+          <p className='truncate w-full'>{title}</p>
+
+          <Link href={`/channel/${channelTitle}-${channelId}`}>
+            <p className='truncate w-48'>{channelTitle}</p>
+          </Link>
+
+          <div className='flex gap-1 items-center'>
+            <span>
+              {views && formatNumbers(views)} views
+            </span>
+            <span className='text-4xl leading-none align-baseline mb-1'>
+              &#x00B7;
+            </span>
+            <span>
+              {formatDate(publishedAt)}
+            </span>
           </div>
+
         </div>
+      </div>
     </div>
   )
 }
