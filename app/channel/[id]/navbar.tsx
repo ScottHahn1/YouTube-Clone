@@ -15,7 +15,9 @@ const ChannelNavbar = ({ id }: { id: string }) => {
                     </Link>
                 </li>
                 <li>
-                    Playlists
+                    <Link href={`/channel/${id}/playlists`}>
+                        Playlists
+                    </Link>
                 </li>
             </ul>
         </nav>
