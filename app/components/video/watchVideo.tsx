@@ -27,13 +27,13 @@ const WatchVideo = ({ playlistId, videoId }: Props) => {
     <div className='flex'>
       <div className='flex flex-col w-11/12'>
           <iframe
-            className='w-full h-96'
+            className='w-11/12 h-96'
             src={`https://www.youtube.com/embed/${videoId}`}
             allowFullScreen
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           >
           </iframe>
-          <div className='flex gap-3'>
+          <div className='flex gap-3 pt-4'>
             { 
               channel.length > 0 && 
               <Image 
