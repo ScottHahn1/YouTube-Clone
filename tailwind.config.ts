@@ -6,12 +6,17 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+      spacing: {
+        '40%': '40%',
+        '55%': '55%',
+        '56%': '56.25%',
+        '60%': '60%',
+        '80%': '80%',
+        '90%': '90%',
+      }
     },
   },
   plugins: [],
