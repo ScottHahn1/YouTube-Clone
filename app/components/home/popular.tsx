@@ -1,6 +1,6 @@
 'use client';
 import { useFetchInfinite } from "@/app/hooks/useFetch";
-import Card from "./card";
+import Card from "../card";
 import useChannels from "../../hooks/useChannels";
 import useInfiniteScroll from "@/app/hooks/useInfiniteScroll";
 
@@ -76,9 +76,9 @@ const Popular = () => {
   const channels = useChannels(videos?.pages.length ? videos?.pages[videos.pages.length - 1].items.map(page => page.snippet.channelId) : []);
 
   const lastItemRef = useInfiniteScroll(fetchNextPage, hasNextPage, isFetchingNextPage);
-  
+
   return (
-    <div className='w-80% flex flex-wrap float-right'>
+    <div className='w-90% flex flex-wrap  float-right'>
       {
         videos?.pages.map(page => page.items.map((video, index) => (
           <>
