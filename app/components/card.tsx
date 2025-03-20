@@ -1,4 +1,4 @@
-import { formatDate, formatNumbers } from '@/app/utils/formatter';
+import { formatDate, formatDuration, formatNumbers } from '@/app/utils/formatter';
 import Image from 'next/image'
 import Link from 'next/link';
 
@@ -6,7 +6,8 @@ interface Props {
   channelId: string;
   channelImage: string;
   channelTitle: string;
-  containerWidth: string;
+  duration: string;
+  index: number;
   playlistId?: string;
   publishedAt: string;
   title: string;
@@ -15,36 +16,44 @@ interface Props {
   views?: number;
 }
 
-const Card = ({ channelId, channelImage, channelTitle, containerWidth, playlistId, publishedAt, title, thumbnail, videoId, views }: Props) => {
+const Card = ({ channelId, channelImage, channelTitle,  duration, index, playlistId, publishedAt, title, thumbnail, videoId, views }: Props) => {
   const videoRoute = playlistId ? `/watch/${videoId}/${playlistId}` : `/watch/${videoId}`;
 
   return (
-    <div className={`${containerWidth} flex flex-col`}>
-      <div className='relative w-full h-56'>
+    <div className='md:col-span-2 lg:col-span-1'>
+      <div className='relative w-screen h-44 md:w-auto md:h-40 xl:h-52'>
         <Link href={videoRoute}>
           <Image 
-            className='absolute p-1 rounded-3xl object-cover' 
-            fill 
+            className='object-cover md:rounded-xl'
+            fill
             src={thumbnail} 
-            alt={`${title} video thumbnail`} />
+            priority={index <= 5}
+            sizes='(max-width: 768px) 50vw, 25vw'
+            alt={`${title} video thumbnail`} 
+          />
+          <p className='absolute bottom-2 right-2 bg-black/60 p-0.5 rounded-md text-white text-sm'>
+            {formatDuration(duration)}
+          </p>
         </Link>
       </div>
 
-      <div className='flex gap-3 pt-4'>
+      <div className='flex gap-2 pt-2'>
         { 
           channelImage && 
           <Link href={`/channel/${channelTitle}-${channelId}`}>
-            <Image 
-              className='rounded-full' 
-              src={channelImage} 
-              width={50} height={50} 
-              alt={`${channelTitle}'s channel image`} 
-            /> 
+            <div className='relative w-10 h-10 object-cover ml-1 md:w-8 md:h-8'>
+              <Image 
+                className='rounded-full' 
+                fill
+                src={channelImage} 
+                alt={`${channelTitle}'s channel image`} 
+              /> 
+            </div>
           </Link>
         }
 
-        <div className='min-w-0'>
-          <p className='truncate w-full'>{title}</p>
+        <div className='min-w-0 text-gray-300 xl:text-lg'>
+          <p className='truncate w-full font-semibold text-white'>{title}</p>
 
           <Link href={`/channel/${channelTitle}-${channelId}`}>
             <p className='truncate w-48'>{channelTitle}</p>
@@ -54,14 +63,13 @@ const Card = ({ channelId, channelImage, channelTitle, containerWidth, playlistI
             <span>
               {views && formatNumbers(views)} views
             </span>
-            <span className='text-4xl leading-none align-baseline mb-1'>
+            <span className='text-3xl'>
               &#x00B7;
             </span>
             <span>
               {formatDate(publishedAt)}
             </span>
           </div>
-
         </div>
       </div>
     </div>
