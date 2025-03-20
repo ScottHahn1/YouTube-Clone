@@ -8,7 +8,7 @@ const SearchBar = () => {
     const [search, setSearch] = useState('');
     
     return (
-        <div className='flex justify-center items-center gap-2 h-8 w-40% rounded-2xl bg-gray-700'>
+        <div className='flex justify-center items-center gap-2 h-8 border-black border rounded-2xl bg-gray-700'>
             <input 
                 className='w-full rounded-2xl rounded-r-none h-full pl-4' 
                 value={search}
