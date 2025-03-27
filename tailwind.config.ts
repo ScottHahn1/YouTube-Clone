@@ -9,17 +9,27 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     extend: {
+      colors: {
+        charcoal: 'rgb(20, 20, 20)',
+        darkGray: 'rgb(50, 50, 50)'
+      },
+      fontFamily: {
+        roboto: "var(--font-roboto), sans-serif",
+      },
       spacing: {
+        '30%': '30%',
         '40%': '40%',
         '55%': '55%',
         '56%': '56.25%',
         '60%': '60%',
         '70%': '70%',
         '80%': '80%',
-        '90%': '90%',
+        '90%': '90%'
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
 };
 export default config;
