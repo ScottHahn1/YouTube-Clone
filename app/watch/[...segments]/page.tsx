@@ -14,7 +14,7 @@ const WatchVideoPage = async ({ params }: Props ) => {
     const playlistId = segments[1] || null;
 
     return (
-        <div className='pl-4'>
+        <div className='ml-10'>
             <WatchVideo playlistId={playlistId as string} videoId={videoId as string} />
         </div>
     )
