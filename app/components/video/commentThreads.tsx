@@ -35,11 +35,11 @@ const CommentThreads = ({ videoId }: { videoId: string }) => {
     }).toString();
 
     const { data: comments } = useFetchInfinite<Comments>(`/api/comments?${commentsQueryParams}`, ['comments', commentsQueryParams]);
-    
+
     return (
-        <div>
+        <div className='text-sm'>
             {comments?.pages.map(thread => thread.items.map(comment => (
-                <div key={comment.snippet.topLevelComment.id} className='mt-16'>
+                <div key={comment.snippet.topLevelComment.id} className='mt-7'>
                     <div className='flex gap-4'>
                         <Image 
                             className='rounded-full w-10 h-10'
@@ -51,13 +51,15 @@ const CommentThreads = ({ videoId }: { videoId: string }) => {
                         <div className='flex flex-col'>
                             <p>{comment.snippet.topLevelComment.snippet.authorDisplayName}</p>
                             <p>{comment.snippet.topLevelComment.snippet.textDisplay}</p>
-                            <div className='flex gap-3 items-center'>
+                            <div className='flex gap-3 items-center pt-2'>
                                 <FontAwesomeIcon icon={faThumbsUp} />
                                 {formatNumbers(comment.snippet.topLevelComment.snippet.likeCount)}
                             </div>
-                            <div className='flex items-center gap-3 pl-2'>
-                                {/* <FaChevronDown className='text-blue-600' /> */}
-                                <FontAwesomeIcon icon={faChevronDown} color='blue-600' />
+                            <div className='flex items-center gap-3 pl-1 pt-2'>
+                                {
+                                    comment.snippet.totalReplyCount > 0 && 
+                                    <FontAwesomeIcon icon={faChevronDown} color='blue-600' />
+                                }
                                 <Replies parentCommentId={comment.snippet.topLevelComment.id} totalReplyCount={comment.snippet.totalReplyCount} />
                             </div>
                         </div>
