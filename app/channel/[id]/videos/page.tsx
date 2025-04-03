@@ -33,6 +33,9 @@ interface PlaylistItems {
 
 interface MetaData {
   items: {
+    contentDetails: {
+      duration: string;
+    },
     statistics: {
       likeCount: number;
       viewCount: number;
@@ -42,6 +45,9 @@ interface MetaData {
 
 interface Views {
   items: {
+    contentDetails: {
+      duration: string;
+    },
     statistics: {
       likeCount: number;
       viewCount: number;
@@ -55,7 +61,7 @@ interface Props {
 
 const ChannelVideos = ({ params }: Props) => {
   const { id } = use(params); 
-  const extractedId = id.slice(id.indexOf('-') + 1).split('/')[0];
+  const extractedId = id.split('-').slice(1).join('-');
   const channelDetails = useChannels(extractedId ? extractedId : '');
   const videosPlaylistId = channelDetails.length && channelDetails[0].contentDetails.relatedPlaylists.uploads;
 
@@ -68,17 +74,12 @@ const ChannelVideos = ({ params }: Props) => {
 
   const viewsQueryParams = new URLSearchParams({
     'id': videos ? videos.pages[videos.pages.length - 1].items.map(video => video.snippet.resourceId.videoId).join(',') : '',
-    'part': 'statistics'
+    'part': 'contentDetails, snippet, statistics'
   }).toString();
   
+  const { data: videosMetaData } = useFetch<MetaData>(`/api/videos?${viewsQueryParams}`, ['channelVideosViews', videos?.pages.length.toString() as string], !!videos);
+
   const [views, setViews] = useState<Views[]>([]);
-
-  const videosIds = videos?.pages
-  .flatMap(page => page.items)
-  .map(video => video.snippet.resourceId.videoId)
-  .join(',');
-
-  const { data: videosMetaData } = useFetch<MetaData>(`/api/videos?${viewsQueryParams}`, ['channelVideosViews', videosIds as string], !!videos);
 
   useEffect(() => {
     if (videosMetaData) {
@@ -87,22 +88,25 @@ const ChannelVideos = ({ params }: Props) => {
   }, [videosMetaData])
 
   const lastItemRef = useInfiniteScroll(fetchNextPage, hasNextPage, isFetchingNextPage);
-
+  
   return (
-    <div className='w-80% flex flex-wrap ml-52 pt-4'>
+    <div className='grid grid-cols-4 gap-4 pr-4 ml-44 pt-4'>
       {
         channelDetails.length > 0 &&
+        views.length > 0 &&
         videos?.pages.map((page, pageIndex) => page.items.map((video, videoIndex) => (
           <Fragment key={video.id}>
             <Card 
               key={video.id}
               channelId={extractedId}
               channelImage={channelDetails[0].snippet.thumbnails.high.url}
-              channelTitle= {channelDetails[0].snippet.title} 
-              containerWidth='w-1/4'
+              channelTitle={channelDetails[0].snippet.title} 
+              duration={views[pageIndex]?.items[videoIndex].contentDetails.duration}
+              index={videoIndex}
               publishedAt={video.snippet.publishedAt}
               title={video.snippet.title}
               thumbnail={video.snippet.thumbnails.high.url} 
+              thumbnailSize='h-36'
               videoId={video.id}
               views={views[pageIndex]?.items[videoIndex].statistics.viewCount}
             />
