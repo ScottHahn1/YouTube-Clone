@@ -25,7 +25,7 @@ interface Props {
 
 const ChannelPlaylists = ({ params }: Props) => {
     const { id } = use(params);
-    const extractedId = id.slice(id.indexOf('-') + 1).split('/')[0];
+    const extractedId = id.split('-').slice(1).join('-');
 
     const playlistsQueryParams = new URLSearchParams({
         'channelId': extractedId as string,
