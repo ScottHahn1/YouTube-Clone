@@ -55,7 +55,7 @@ interface Props {
 
 const ChannelHome = ({ params }: Props) => {
     const { id } = use(params); 
-    const extractedId = id.slice(id.indexOf('-') + 1).split('/')[0];
+    const extractedId = id.split('-').slice(1).join('-');
 
     const sectionQueryParams = new URLSearchParams({
         'channelId': extractedId as string,
@@ -86,7 +86,7 @@ const ChannelHome = ({ params }: Props) => {
     const scrollContainerRef = useRef<(HTMLDivElement | null)[]>([]);
 
     return (
-        <div className='w-80% ml-52'>
+        <div className='w-80% ml-44'>
             {playlists?.items.map((playlist, index) => (
                 <div key={`${playlist.id}-${index}`} className='pt-4'>
                     <p className='text-xl font-semibold'>{playlist.snippet.title}</p>
