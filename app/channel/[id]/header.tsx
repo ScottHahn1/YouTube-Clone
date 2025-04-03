@@ -4,14 +4,13 @@ import { formatNumbers } from "@/app/utils/formatter";
 import Image from "next/image";
 
 const ChannelHeader = ({ id }: { id: string }) => {
-  const extractedId = id.slice(id.indexOf('-') + 1).split('/')[0];
-
+  const extractedId = id.split('-').slice(1).join('-');
   const channel = useChannels(extractedId);
 
   const bannerParams = '=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj';
 
   return (
-    <header className='ml-52'>
+    <header className='ml-44'>
       { channel.length > 0 &&
         <div className='flex flex-col gap-4'>
           <div className='h-48 w-10/12 relative object-fill'>
