@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const ChannelNavbar = ({ id }: { id: string }) => {
     return (
-        <nav className='ml-52'>
+        <nav className='ml-44'>
             <ul className='flex gap-4 text-xl'>
                 <li>
                     <Link href={`/channel/${id}`}>
