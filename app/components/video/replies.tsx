@@ -40,7 +40,7 @@ const Replies = ({ parentCommentId, totalReplyCount }: Props) => {
     return (
         <div>
             <Button 
-                className={'text-blue-700 cursor-pointer'}
+                className='text-blue-700 dark:text-sky-400 cursor-pointer'
                 handleClick={() => setFetchData(true)}
             >
                 {
