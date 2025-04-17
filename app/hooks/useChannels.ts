@@ -23,9 +23,6 @@ interface Channels {
     customUrl: string;
     description: string;
     thumbnails: {
-      default: {
-        url: string;
-      }
       high: {
         url: string;
       }
