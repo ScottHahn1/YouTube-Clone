@@ -79,7 +79,7 @@ const Popular = () => {
   const lastItemRef = useInfiniteScroll(fetchNextPage, hasNextPage, isFetchingNextPage);
 
   return (
-    <div className='grid gap-3 md:grid-cols-4 md:pr-1 md:ml-32 lg:ml-24 lg:grid-cols-3 xl:ml-36'>
+    <div className='grid gap-4 md:grid-cols-4 md:pr-1 md:ml-32 lg:grid-cols-3 lg:ml-24 xl:ml-36 xl:pr-0 xl:mr-4'>
       {
         videos?.pages.map(page => page.items.map((video, index) => (
           <Fragment key={video.id}>
@@ -92,6 +92,7 @@ const Popular = () => {
               publishedAt={video.snippet.publishedAt}
               title={video.snippet.title} 
               thumbnail={video.snippet.thumbnails.high.url} 
+              thumbnailSize='w-screen h-44 md:w-auto md:h-40 xl:h-52'
               videoId={video.id}
               views={video.statistics.viewCount}
             />
