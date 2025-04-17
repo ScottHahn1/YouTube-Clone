@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 interface Video {
-  snippet: { title: string }
+  snippet: { title: string, channelTitle: string }
 }
 
 export async function GET(req: Request) {
@@ -11,9 +11,12 @@ export async function GET(req: Request) {
   try {
     const response = await fetch(`https://youtube.googleapis.com/youtube/v3/videos?${params}&key=${process.env.API_KEY}`);
     const data = await response.json();
+
     const validData = {
       items: data.items.filter((video: Video) => (
-        video.snippet.title !== 'Private video'
+        video.snippet.title !== 'Private video' 
+        && 
+        !video.snippet.channelTitle.toLowerCase().endsWith('- topic')
       )),
       nextPageToken: data.nextPageToken
     }
