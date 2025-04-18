@@ -19,18 +19,19 @@ export async function GET(req: Request) {
             `https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,snippet&playlistId=${id}&maxResults=50&key=${process.env.API_KEY}`
           ).then((res) => res.json())
         );
+
         const data = await Promise.all(playlistPromises);
+
         const validData = data
         .filter(playlist => !playlist.error)
         .map((playlist) => ({
           ...playlist,
           items: playlist.items.filter((video: Video) => video.snippet.title !== 'Private video')
         }));
+    
         return NextResponse.json(validData, { status: 200 });
-      } else if (playlistsIds.length === 1) {
-        const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,snippet&playlistId=${playlistsIds[0]}&maxResults=20&key=${process.env.API_KEY}`
-        )
+      } else {
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,snippet&playlistId=${playlistsIds[0]}&maxResults=20&key=${process.env.API_KEY}`)
         const data = await response.json();
         return NextResponse.json(data, { status: 200 });
       }
