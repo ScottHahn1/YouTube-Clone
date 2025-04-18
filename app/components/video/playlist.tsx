@@ -24,10 +24,10 @@ const VideoPlaylist = ({ playlistId, videoId }: Props) => {
     )?.snippet.position ?? 0;
     
     return (
-        <div className='rounded-lg'>
-            <p>{playlist?.items[0].snippet.title}</p>
+        <div className='border pt-4 border-gray-300/60 rounded-lg '>
+            <p className='pl-4'>{playlist?.items[0].snippet.title}</p>
 
-            <div>
+            <div className='pl-4'>
                 <p>{playlistVideos?.items[0].snippet.channelTitle}</p>
                 <p>
                     { `${getCurrentVideo() + 1} / ${playlistVideos?.pageInfo.totalResults}` }
@@ -37,17 +37,19 @@ const VideoPlaylist = ({ playlistId, videoId }: Props) => {
             {
                 playlistVideos?.items.map(video => (
                     <Link href={`/watch/${video.contentDetails.videoId}/${playlistId}`} key={video.id}>
-                        <div className='mt-4 w-60%'>
-                            <div className='relative w-full h-44 object-cover'>
+                        <div className='mt-4 mb-4 flex items-center gap-6 text-sm'>
+                            <div className='relative w-1/3 h-20'>
                                 <Image
-                                    className='absolute rounded-3xl'
+                                    className='rounded-lg ml-3'
                                     src={video.snippet.thumbnails.high.url}
+                                    objectFit='cover'
                                     fill
                                     alt={`${video.snippet.title}'s image`}
                                 />
                             </div>
-                            <div className='flex flex-col'>
-                                <p>{video.snippet.title}</p>
+                            
+                            <div className='flex flex-col w-60%'>
+                                <p className='font-medium'>{video.snippet.title}</p>
                                 <p>{video.snippet.channelTitle}</p>
                             </div>
                         </div>
