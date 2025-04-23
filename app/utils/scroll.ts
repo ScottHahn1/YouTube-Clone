@@ -1,25 +1,41 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 
-interface Props {
-    container: HTMLDivElement | null;
-    direction: string;
-    index: number;
-    setNextButtonPressed: Dispatch<SetStateAction<boolean>>;
-}
+export const handleScroll = (container: HTMLDivElement, direction: 'left' | 'right') => {
+  if (!container) return;
 
-export const handleScroll = ({ container, direction, index, setNextButtonPressed } : Props) => {
-    if (container) {
-        const scrollAmount = 1200; 
-        container.scrollBy({
-            left: direction === 'left' ? -scrollAmount : scrollAmount,
-            behavior: 'smooth', 
-        });
-    }
-    if (direction === 'right') {
-        setNextButtonPressed(true);
-    }
+  const scrollBy = container.clientWidth * 0.6;
+  const maxScroll = container.scrollWidth - container.clientWidth;
 
-    if (container?.scrollLeft === 0) {
-        setNextButtonPressed(false);
-    }
+  if (direction === 'right') {
+    const remainingScroll = maxScroll - container.scrollLeft;
+
+    const scrollDistance = remainingScroll < scrollBy ? remainingScroll : scrollBy;
+
+    container.scrollBy({ left: scrollDistance, behavior: 'smooth' });
+  }
+
+  if (direction === 'left') {
+    const scrollDistance = container.scrollLeft < scrollBy ? container.scrollLeft : scrollBy;
+
+    container.scrollBy({ left: -scrollDistance, behavior: 'smooth' });
+  }
+};
+
+export const handleScrollCheck = (container: HTMLDivElement, index: number, setShowPrevButton: Dispatch<SetStateAction<boolean[]>>, setShowNextButton: Dispatch<SetStateAction<boolean[]>>) => {
+  if (!container) return;
+
+  const atStart = container.scrollLeft <= 5;
+  const atEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 5;
+
+  setShowPrevButton(prev => {
+    const updated = [...prev];
+    updated[index] = !atStart;
+    return updated;
+  });
+
+  setShowNextButton(prev => {
+    const updated = [...prev];
+    updated[index] = !atEnd;
+    return updated;
+  });
 };
