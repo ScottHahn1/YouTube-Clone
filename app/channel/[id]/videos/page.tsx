@@ -61,7 +61,8 @@ interface Props {
 
 const ChannelVideos = ({ params }: Props) => {
   const { id } = use(params); 
-  const extractedId = id.split('-').slice(1).join('-');
+  const extractedId = id.split('-').slice(-1).toString();
+
   const channelDetails = useChannels(extractedId ? extractedId : '');
   const videosPlaylistId = channelDetails.length && channelDetails[0].contentDetails.relatedPlaylists.uploads;
 
@@ -90,7 +91,7 @@ const ChannelVideos = ({ params }: Props) => {
   const lastItemRef = useInfiniteScroll(fetchNextPage, hasNextPage, isFetchingNextPage);
   
   return (
-    <div className='grid grid-cols-4 gap-4 pr-4 ml-44 pt-4'>
+    <div className='mx-2 pt-4 grid-cols-2 gap-4 md:mx-0 md:grid md:pr-4 md:ml-36 lg:grid-cols-3 xl:grid-cols-4'>
       {
         channelDetails.length > 0 &&
         views.length > 0 &&
