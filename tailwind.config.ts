@@ -17,21 +17,15 @@ const config: Config = {
         roboto: "var(--font-roboto), sans-serif",
       },
       spacing: {
-        '30%': '30%',
-        '35%': '35%',
         '38%': '38%',
         '40%': '40%',
         '55%': '55%',
         '60%': '60%',
         '65%': '65%',
-        '70%': '70%',
         '80%': '80%',
         '90%': '90%'
       }
     },
   },
-  plugins: [
-    require('@tailwindcss/line-clamp'),
-  ],
 };
 export default config;
