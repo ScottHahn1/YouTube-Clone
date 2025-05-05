@@ -72,11 +72,23 @@ const Popular = () => {
     'maxResults': '30'
   }).toString();
 
-  const { data: videos, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchInfinite<Videos>(`/api/videos?${videosQueryParams}`, ['popular']);
+  const { data: videos, isLoading: isVideosLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchInfinite<Videos>(`/api/videos?${videosQueryParams}`, ['popular']);
 
-  const channels = useChannels(videos?.pages.length ? videos?.pages[videos.pages.length - 1].items.map(page => page.snippet.channelId) : []);
+  const { channels, isLoading: isChannelsLoading } = useChannels(videos?.pages.length ? videos?.pages[videos.pages.length - 1].items.map(page => page.snippet.channelId) : []);
 
   const lastItemRef = useInfiniteScroll(fetchNextPage, hasNextPage, isFetchingNextPage);
+
+  if (isVideosLoading || isChannelsLoading) {
+    return (
+      <div className='flex flex-col bg-blue-700 items-center justify-center bg-gradient-to-br from-white via-gray-100 to-gray-200 animate-pulse'>
+        <div className='w-32 h-32 border-4 mt-20 border-gray-300 border-t-red-600 rounded-full animate-spin mb-4'>
+        </div>
+        <p className='text-xl text-red-700 font-bold'>
+          Loading videos...
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className='grid gap-4 md:grid-cols-4 md:pr-1 md:ml-32 lg:grid-cols-3 lg:ml-24 xl:ml-36 xl:pr-0 xl:mr-4'>
