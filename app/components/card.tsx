@@ -27,16 +27,16 @@ const Card = ({ channelId, channelImage, channelTitle, duration, index, playlist
           <Image 
             className='object-cover md:rounded-xl'
             fill
-            src={thumbnail} 
+            src={thumbnail}
             priority={index <= 5}
             sizes='(max-width: 768px) 50vw, 25vw'
             alt={`${title} video thumbnail`} 
           />
           {
             duration &&
-            <p className='absolute bottom-2 right-2 bg-black/60 py-0.5 px-1 rounded-md text-white text-sm'>
-              {formatDuration(duration)}
-            </p>
+            <span className='absolute bottom-2 right-2 bg-black/60 py-0.5 px-1 rounded-md text-white text-sm'>
+              { formatDuration(duration) }
+            </span>
           }
         </Link>
       </div>
@@ -56,13 +56,13 @@ const Card = ({ channelId, channelImage, channelTitle, duration, index, playlist
           </Link>
         }
 
-        <div className='min-w-0 text-gray-700 dark:text-gray-300'>
-          <p className='truncate w-full font-medium text-gray-900 dark:text-white xl:text-lg'>
+        <div className='text-gray-700 dark:text-gray-300'>
+          <span className='line-clamp-1 w-full font-medium text-gray-900 dark:text-white xl:text-lg'>
             {title}
-          </p>
+          </span>
 
           <Link href={`/channel/${channelTitle}-${channelId}`}>
-            <p className='truncate w-48'>{channelTitle}</p>
+            <span className='line-clamp-1'>{channelTitle}</span>
           </Link>
 
           <div className='flex gap-1 items-center'>
