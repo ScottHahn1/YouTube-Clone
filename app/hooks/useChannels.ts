@@ -44,7 +44,7 @@ const useChannels = (channelIds: string[] | string) => {
     'maxResults': '30'
   }).toString();
 
-  const { data: channelsData } = useFetch<ChannelsData>(`/api/channels?${channelsQueryParams}`, ['channels', channelsQueryParams], !!channelIds.length);
+  const { data: channelsData, isLoading, isError, error } = useFetch<ChannelsData>(`/api/channels?${channelsQueryParams}`, ['channels', channelsQueryParams], !!channelIds.length);
   
   useEffect(() => {
     if (channelsData) {
@@ -52,7 +52,7 @@ const useChannels = (channelIds: string[] | string) => {
     }
   }, [channelsData])
 
-  return channels;
+  return { channels, isLoading, isError, error };
 }
 
 export default useChannels;

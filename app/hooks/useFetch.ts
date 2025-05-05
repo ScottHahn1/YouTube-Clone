@@ -7,14 +7,14 @@ const useFetch = <T>(url: string, queryKey: string[], enabled: boolean) => {
         return res.json();
     };
 
-    const { data, isLoading, error } = useQuery<T>({
+    const { data, isLoading, isError, error } = useQuery<T>({
         queryKey: queryKey,
         queryFn: fetchData,
         enabled: enabled,
         staleTime: 300000 //5 minutes
     });
 
-    return { data, isLoading, error };
+    return { data, isLoading, isError, error };
 }
 
 const useFetchInfinite = <T extends { nextPageToken: string }>(url: string, queryKey: string[], enabled = true) => {
@@ -24,7 +24,7 @@ const useFetchInfinite = <T extends { nextPageToken: string }>(url: string, quer
         return res.json();
     };
 
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess } = useInfiniteQuery<T>({
+    const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess } = useInfiniteQuery<T>({
         queryKey: queryKey,
         queryFn: fetchData,
         initialPageParam: '',
@@ -33,7 +33,7 @@ const useFetchInfinite = <T extends { nextPageToken: string }>(url: string, quer
         staleTime: 300000 //5 minutes
     });
 
-    return { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess };
+    return { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess };
 }
 
 export { useFetch, useFetchInfinite };
