@@ -24,10 +24,11 @@ const Navbar = () => {
             </div>
             
             <Button 
-                children={ theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode' } 
                 className='py-1.5 px-1.5 text-sm rounded-full bg-slate-800 dark:bg-white text-white dark:text-black md:p-2 md:text-base'
                 handleClick={toggleTheme}
-            />
+            >
+                { theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode' }
+            </Button>
         </nav>
     )
 }
