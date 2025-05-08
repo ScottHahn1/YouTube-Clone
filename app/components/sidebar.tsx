@@ -1,4 +1,4 @@
-import { faClockRotateLeft, faFilm, faHouse, faPlayCircle, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faFootball, faGamepad, faHouse, faMusic, faTheaterMasks } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
@@ -11,22 +11,22 @@ const Sidebar = () => {
             </Link>
 
             <Link href='/entertainment/24' className='flex flex-col pb-2 pt-2'>
-                <FontAwesomeIcon icon={faFilm} />
+                <FontAwesomeIcon icon={faTheaterMasks} />
                 <span>Entertainment</span>
             </Link>
 
             <Link href='/gaming/20' className='flex flex-col pb-2 pt-2'>
-                <FontAwesomeIcon icon={faClockRotateLeft} />
+                <FontAwesomeIcon icon={faGamepad} />
                 <span>Gaming</span>
             </Link>
 
             <Link href='/music/10' className='flex flex-col pb-2 pt-2'>
-                <FontAwesomeIcon icon={faPlayCircle} />
+                <FontAwesomeIcon icon={faMusic} />
                 <span>Music</span>
             </Link>
             
             <Link href='/sports/17' className='flex flex-col pb-2 pt-2'>
-                <FontAwesomeIcon icon={faUser} />
+                <FontAwesomeIcon icon={faFootball} />
                 <span>Sports</span>
             </Link>
         </nav>
