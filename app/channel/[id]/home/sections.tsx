@@ -51,8 +51,8 @@ const ChannelSections = ({ index, playlistsItems }: Props) => {
                     playlistsItems[index].items &&
                     playlistsItems[index].items
                     .map(item => (
-                        <div key={item.id} className='text-sm w-1/2 flex-shrink-0 md:w-1/4 lg:w-1/5 xl:w-1/6'>
-                            <div className='relative h-24 md:h-28'>
+                        <div key={item.id} className='text-sm w-1/2 flex-shrink-0 md:w-1/3 lg:w-1/4 xl:w-1/5'>
+                            <div className='relative h-24 md:h-32'>
                                 <Link href={`/watch/${item.contentDetails.videoId}`}>
                                     <Image
                                         className='rounded-lg object-cover' 
