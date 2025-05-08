@@ -3,11 +3,14 @@ import Button from '@/app/components/button';
 import useChannels from "@/app/hooks/useChannels";
 import { formatNumbers } from "@/app/utils/formatter";
 import Image from "next/image";
+import { useParams } from 'next/navigation';
 
-const ChannelHeader = ({ id }: { id: string }) => {
+const ChannelHeader = () => {
+  const params = useParams();
+  const id = params?.id as string;
   const extractedId = id.split('-').slice(-1).toString();
 
-  const channel = useChannels(extractedId);
+  const [channel] = useChannels(extractedId);
 
   const bannerParams = '=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj';
 
