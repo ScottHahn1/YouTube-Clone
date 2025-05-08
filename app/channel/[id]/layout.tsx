@@ -11,7 +11,7 @@ export default async function Layout({ children, params }:
 
     return (
         <>
-            <ChannelHeader id={id} />
+            <ChannelHeader />
             <ChannelNavbar id={id} />
             <main>{children}</main>
         </>
