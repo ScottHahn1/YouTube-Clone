@@ -5,11 +5,15 @@ export async function GET(req: Request) {
     const params = url.searchParams;
 
     try {
-      const response = await fetch(`https://youtube.googleapis.com/youtube/v3/channels?${params}&key=${process.env.API_KEY}`);
-        const data = await response.json();
-        return NextResponse.json(data, { status: 200 });
-      } catch (error) {
-        console.error('Internal Server Error:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+      const response = await fetch(`httube.googleapis.com/youtube/v3/channels?${params}&key=${process.env.API_KEY}`);
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      return NextResponse.json(data, { status: 200 });
+    } catch (error) {
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

@@ -6,10 +6,15 @@ export async function GET(req: Request) {
 
     try {
       const response = await fetch(`https://youtube.googleapis.com/youtube/v3/comments?${params}&key=${process.env.API_KEY}`);
-        const data = await response.json();
-        return NextResponse.json(data, { status: 200 });
-      } catch (error) {
-        console.error('Internal Server Error:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      return NextResponse.json(data, { status: 200 });
+    } catch (error) {
+      console.error('Internal Server Error:', error);
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

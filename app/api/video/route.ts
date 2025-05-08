@@ -6,6 +6,11 @@ export async function GET(req: Request) {
 
   try {
     const response = await fetch(`https://youtube.googleapis.com/youtube/v3/videos?${params}&key=${process.env.API_KEY}`);
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
     const data = await response.json();
     return NextResponse.json(data.items[0], { status: 200 });
   } catch (error) {

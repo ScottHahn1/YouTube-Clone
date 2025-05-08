@@ -14,11 +14,18 @@ export async function GET(req: Request) {
 
     try {
       if (playlistsIds.length > 1) {
-        const playlistPromises = playlistsIds.map((id) =>
-          fetch(
+        const playlistPromises = playlistsIds.map(async (id) => {
+          const response = fetch(
             `https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,snippet&playlistId=${id}&maxResults=50&key=${process.env.API_KEY}`
-          ).then((res) => res.json())
-        );
+          );
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const data = await res.json();
+          return data;
+        });
 
         const data = await Promise.all(playlistPromises);
 
