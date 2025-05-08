@@ -1,7 +1,7 @@
 'use client';
 import { useFetch } from "@/app/hooks/useFetch";
-import { use } from "react";
 import ChannelSections from "./home/sections";
+import { useParams } from "next/navigation";
   
 interface ChannelSections {
   contentDetails: {
@@ -45,12 +45,9 @@ export interface PlaylistsItems {
   }
 }
 
-interface Props {
-  params: Promise<{ id: string }>;
-}
-
-const ChannelHome = ({ params }: Props) => {
-  const { id } = use(params); 
+const ChannelHome = () => {
+  const params = useParams();
+  const id = params?.id as string;
   const extractedId = id.split('-').slice(-1).toString();
     
   const sectionQueryParams = new URLSearchParams({
@@ -77,7 +74,7 @@ const ChannelHome = ({ params }: Props) => {
   return (
     <div>
       {playlists?.items.map((playlist, index) => (
-        <div key={`${playlist.id}-${index}`} className='md:w-full lg:w-[90%] pt-4 mx-1 md:mx-0 '>
+        <div key={`${playlist.id}-${index}`} className='md:w-full lg:w-[95%] pt-4 mx-1 md:mx-0 '>
           <p className='text-xl font-semibold md:ml-36'>{playlist.snippet.title}</p>
 
           {
