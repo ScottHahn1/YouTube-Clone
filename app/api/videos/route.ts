@@ -25,9 +25,10 @@ export async function GET(req: Request) {
       )),
       nextPageToken: data.nextPageToken
     }
+    
     return NextResponse.json(validData, { status: 200 });
   } catch (error) {
     console.error('Internal Server Error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
-}
+  };
+};
