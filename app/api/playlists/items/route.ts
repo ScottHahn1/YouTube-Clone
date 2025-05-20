@@ -9,21 +9,18 @@ interface Video {
 export async function GET(req: Request) {
     const url = new URL(req.url);
     const params = url.searchParams;
-
     const playlistsIds = params.get('playlistId')?.split(',') || [];
 
     try {
       if (playlistsIds.length > 1) {
         const playlistPromises = playlistsIds.map(async (id) => {
-          const response = fetch(
-            `https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,snippet&playlistId=${id}&maxResults=50&key=${process.env.API_KEY}`
-          );
+          const response = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,snippet&playlistId=${id}&maxResults=50&key=${process.env.API_KEY}`);
 
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
 
-          const data = await res.json();
+          const data = await response.json();
           return data;
         });
 
@@ -35,7 +32,7 @@ export async function GET(req: Request) {
           ...playlist,
           items: playlist.items.filter((video: Video) => video.snippet.title !== 'Private video')
         }));
-    
+
         return NextResponse.json(validData, { status: 200 });
       } else {
         const response = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,snippet&playlistId=${playlistsIds[0]}&maxResults=20&key=${process.env.API_KEY}`)
@@ -46,4 +43,4 @@ export async function GET(req: Request) {
       console.error('Internal Server Error:', error);
       return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
-}
+};
