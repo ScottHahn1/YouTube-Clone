@@ -15,7 +15,7 @@ interface Props {
   thumbnailSize: string;
   videoId: string;
   views: number;
-}
+};
 
 const Card = ({ channelId, channelImage, channelTitle, duration, index, playlistId, publishedAt, title, thumbnail, thumbnailSize, videoId, views }: Props) => {
   const videoRoute = playlistId ? `/watch/${videoId}/${playlistId}` : `/watch/${videoId}`;
@@ -44,7 +44,7 @@ const Card = ({ channelId, channelImage, channelTitle, duration, index, playlist
       <div className='flex gap-2 pt-2'>
         { 
           channelImage && 
-          <Link href={`/channel/${channelTitle}-${channelId}`}>
+          <Link href={`/channel/${channelTitle}/${channelId}`}>
             <div className='relative object-cover ml-1 w-10 h-10 md:w-8 md:h-8'>
               <Image 
                 className='rounded-full' 
@@ -61,7 +61,7 @@ const Card = ({ channelId, channelImage, channelTitle, duration, index, playlist
             {title}
           </span>
 
-          <Link href={`/channel/${channelTitle}-${channelId}`}>
+          <Link href={`/channel/${channelTitle}/${channelId}`}>
             <span className='line-clamp-1'>{channelTitle}</span>
           </Link>
 
@@ -84,7 +84,7 @@ const Card = ({ channelId, channelImage, channelTitle, duration, index, playlist
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Card;
