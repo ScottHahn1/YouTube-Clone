@@ -23,7 +23,7 @@ export interface Videos {
     statistics: {
       viewCount: number;
     };
-  }[];
+  }[],
   nextPageToken: string;
 };
 
@@ -42,16 +42,16 @@ export default async function Home() {
       'Error loading videos!'
     );
   } catch (err) {
-    console.error(err);
     return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='Error loading videos!' />;
   };
 
   return (
     <main className='mt-4'>
-      {
-        videos &&
-        <Popular initialData={videos} />
-      }
+      <Popular 
+        initialData={videos} 
+        queryKey='popular'
+        videosQueryParams={videosQueryParams}
+      />
     </main>
   );
 };
