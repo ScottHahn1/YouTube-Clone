@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import SearchBar from './search/searchBar';
 import { useTheme } from '../contexts/themeContext';
@@ -31,6 +32,6 @@ const Navbar = () => {
             </Button>
         </nav>
     )
-}
+};
 
 export default Navbar;
