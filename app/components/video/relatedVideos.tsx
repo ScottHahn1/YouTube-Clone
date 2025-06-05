@@ -1,32 +1,42 @@
-import { useFetchInfinite } from "@/app/hooks/useFetch";
-import { Videos } from "../home/popular";
+import { Videos } from "@/app/page";
 import Link from "next/link";
 import Image from "next/image";
 import { formatDate, formatDuration, formatNumbers } from "@/app/utils/formatter";
+import Error from "../Error";
+import fetchData from "@/app/utils/fetchData";
 
 interface RelatedVideos {
     id: string;
     nextPageToken: string;
-}
+};
 
 interface Props {
     videoCategoryId: string;
-}
+};
 
-const RelatedVideos = ({ videoCategoryId }: Props) => {
+const RelatedVideos = async ({ videoCategoryId }: Props) => {
     const videosQueryParams = new URLSearchParams({
         'chart': 'mostPopular',
-        'maxResults': '20',
+        'maxResults': '30',
         'part': 'contentDetails, snippet, statistics',
         'videoCategoryId': videoCategoryId
     }).toString();
 
-    const { data: videos, fetchNextPage, isFetchingNextPage } = useFetchInfinite<Videos>(`/api/videos?${videosQueryParams}`, ['relatedVideos', videosQueryParams]);
+    let videos: Videos | null = null;
+
+    try {
+        videos = await fetchData<Videos>(
+            `${process.env.API_URL}/api/videos?${videosQueryParams}`, 
+            'Error loading videos!'
+        );
+    } catch (err) {
+        return <Error divClassName='' message='Error loading videos!' />;
+    };
 
     return (
         <div>
             {
-                videos?.pages.map(page => page.items.map((video) => (
+                videos?.items.map(video => (
                     <div className='flex items-center gap-1 h-28' key={video.id}>
                         <div className='relative w-40% h-20 xl:h-24'>
                             <Link href={`/watch/${video.id}`}>
@@ -53,10 +63,10 @@ const RelatedVideos = ({ videoCategoryId }: Props) => {
                             </div>
                         </div>
                     </div>
-                )))
+                ))
             }
         </div>
-    )
-}
+    );
+};
 
 export default RelatedVideos;
