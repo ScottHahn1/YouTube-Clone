@@ -4,7 +4,7 @@ interface Video {
   snippet: {
     title: string;
   }
-}
+};
 
 export async function GET(req: Request) {
     const url = new URL(req.url);
@@ -14,11 +14,11 @@ export async function GET(req: Request) {
     try {
       if (playlistsIds.length > 1) {
         const playlistPromises = playlistsIds.map(async (id) => {
-          const response = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,snippet&playlistId=${id}&maxResults=50&key=${process.env.API_KEY}`);
+          const response = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,snippet&playlistId=${id}&maxResults=12&key=${process.env.API_KEY}`);
 
           if (!response.ok) {
             throw new Error('Network response was not ok');
-          }
+          };
 
           const data = await response.json();
           return data;
@@ -35,7 +35,12 @@ export async function GET(req: Request) {
 
         return NextResponse.json(validData, { status: 200 });
       } else {
-        const response = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,snippet&playlistId=${playlistsIds[0]}&maxResults=20&key=${process.env.API_KEY}`)
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?${params}&key=${process.env.API_KEY}`);
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        };
+
         const data = await response.json();
         return NextResponse.json(data, { status: 200 });
       }
