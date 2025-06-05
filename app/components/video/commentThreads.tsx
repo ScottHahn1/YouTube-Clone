@@ -1,9 +1,13 @@
+'use client';
 import { useFetchInfinite } from "@/app/hooks/useFetch";
 import Replies from "./replies";
 import Image from "next/image";
 import { faChevronDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { formatNumbers } from "@/app/utils/formatter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Error from "../Error";
+import Loading from "../Loading";
+import useInfiniteScroll from "@/app/hooks/useInfiniteScroll";
 
 interface Comments {
     id: string;
@@ -20,21 +24,41 @@ interface Comments {
                 }
             }
             totalReplyCount: number;
-        }
+        };
     }[];
     nextPageToken: string;
-}
+};
 
 const CommentThreads = ({ videoId }: { videoId: string }) => {
     const commentsQueryParams = new URLSearchParams({
-        'maxResults': '30',
+        'maxResults': '20',
         'order': 'relevance',
         'part': 'id, snippet',
         'textFormat': 'plainText',
         'videoId': videoId
     }).toString();
 
-    const { data: comments } = useFetchInfinite<Comments>(`/api/comments?${commentsQueryParams}`, ['comments', commentsQueryParams]);
+    const { 
+        data: comments, 
+        isLoading, 
+        isError, 
+        hasNextPage, 
+        fetchNextPage, 
+        isFetchingNextPage 
+    } = useFetchInfinite<Comments>(
+        `/api/comments?${commentsQueryParams}`, 
+        ['comments', commentsQueryParams]
+    );
+
+    const lastItemRef = useInfiniteScroll(fetchNextPage, hasNextPage, isFetchingNextPage);
+
+    if (isError) {
+        return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='Error loading comments!'/>;
+    };
+
+    if (isLoading) {
+        return <Loading wrapperClassName='min-h-screen md:ml-36' message='Loading comments...'/>;
+    };
 
     return (
         <div className='text-sm'>
@@ -65,10 +89,11 @@ const CommentThreads = ({ videoId }: { videoId: string }) => {
                         </div>
                     </div>
 
+                    <div ref={lastItemRef} />
                 </div>
             )))}
         </div>
-    )
-}
+    );
+};
 
 export default CommentThreads;
