@@ -1,13 +1,13 @@
-import { PlaylistsItems } from "@/app/channel/[id]/page";
+import { PlaylistsItems } from "@/app/channel/[name]/[id]/page";
+import { Playlists } from "@/app/channel/[name]/[id]/playlists/page";
 import { useFetch } from "@/app/hooks/useFetch";
 import Image from "next/image";
-import { Playlists } from "@/app/channel/[id]/playlists/page";
 import Link from "next/link";
 
 interface Props {
     playlistId: string;
     videoId: string;
-}
+};
 
 const VideoPlaylist = ({ playlistId, videoId }: Props) => {
     const playlistQueryParams = new URLSearchParams({
@@ -15,14 +15,27 @@ const VideoPlaylist = ({ playlistId, videoId }: Props) => {
         'part': 'contentDetails, snippet'
     }).toString();
     
-    const { data: playlist } = useFetch<Playlists>(`/api/playlists?${playlistQueryParams}`, ['playlist', playlistId], !!playlistId);
+    const { data: playlist } = useFetch<Playlists>(
+        `/api/playlists?${playlistQueryParams}`, 
+        ['playlist', playlistId], 
+        !!playlistId
+    );
 
-    const { data: playlistVideos } = useFetch<PlaylistsItems>(`/api/playlists/items?playlistId=${playlistId}`, ['playlistVideos', playlistId], !!playlistId);
+    const videosQueryParams = new URLSearchParams({
+        'playlistId': playlistId,
+        'part': 'contentDetails, snippet'
+    }).toString();
+
+    const { data: playlistVideos } = useFetch<PlaylistsItems>(
+        `/api/playlists/items?${videosQueryParams}`, 
+        ['playlistVideos', playlistId], 
+        !!playlistId
+    );
    
     const getCurrentVideo = () => playlistVideos?.items.find(video => 
         video.contentDetails.videoId === videoId
     )?.snippet.position ?? 0;
-    
+   
     return (
         <div className='border pt-4 border-gray-300/60 rounded-lg '>
             <p className='pl-4'>{playlist?.items[0].snippet.title}</p>
@@ -57,7 +70,7 @@ const VideoPlaylist = ({ playlistId, videoId }: Props) => {
                 ))
             }
         </div>
-    )
-}
+    );
+};
 
 export default VideoPlaylist;
