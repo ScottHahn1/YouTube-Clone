@@ -6,7 +6,6 @@ import Popular from "@/app/components/home/popular";
 interface Props {
     params: Promise<{ category: string, id: string }>
 };
-feat: add category page with dynamic video fetching and error handling
 
 const Category = async ({ params }: Props) => {
     const { category, id } = await params;
