@@ -6,42 +6,7 @@ import { Fragment } from 'react';
 import Error from "../Error";
 import Loading from "../Loading";
 import { Videos } from "@/app/page";
-
-interface Channels {
-  brandingSettings: {
-    channel: {
-      description: string;
-      unsubscribedTrailer: string;
-    },
-    image: {
-      bannerExternalUrl: string;
-    }
-  },
-  contentDetails: {
-    relatedPlaylists: {
-      uploads: string;
-    }
-  },
-  snippet: {
-    customUrl: string;
-    description: string;
-    thumbnails: {
-      high: {
-        url: string;
-      }
-    }
-    title: string;
-  },
-  statistics: {
-    subscriberCount: number;
-    videoCount: number;
-  }
-  id: string;
-};
-
-interface ChannelsData {
-  items: Channels[];
-};
+import { ChannelDetails } from "@/app/channel/[name]/[id]/videos/page";
 
 interface Props {
   initialData: Videos;
@@ -73,32 +38,42 @@ const Popular = ({ initialData, queryKey, videosQueryParams }: Props) => {
     'part': 'brandingSettings, contentDetails, snippet, statistics'
   }).toString();
 
-  const [channels] = useFetchWithState<Channels, ChannelsData>(
+  const [channels] = useFetchWithState<ChannelDetails>(
     `/api/channels?${channelsQueryParams}`,
-    ['popularChannels', channelsQueryParams],
+    ['popularChannels', channelIds.toString()],
     !!channelIds
   );
 
   const lastItemRef = useInfiniteScroll(fetchNextPage, hasNextPage, isFetchingNextPage);
 
-  if (videosLoading) {
-    return <Loading wrapperClassName='min-h-screen md:ml-36' message='Loading videos... '/>;
-  };
-
   if (videosError || !videos) {
     return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='No videos data found!' />;
+  };
+
+  if (videosLoading) {
+    return <Loading wrapperClassName='min-h-screen md:ml-36' message='Loading videos... '/>;
   };
 
   return (
     <div className='grid gap-4 md:grid-cols-4 md:pr-1 md:ml-32 lg:grid-cols-3 lg:ml-24 xl:ml-36 xl:pr-0 xl:mr-4'>
       {
         channels && Array.isArray(channels) &&
-        videos?.pages.map(page => page.items.map((video, index) => (
+        videos?.pages.map((page, pageIndex) => page.items.map((video, index) => (
           <Fragment key={video.id}>
             <Card 
               channelId={video.snippet.channelId}
-              channelImage={channels.find(channel => channel.id == video.snippet.channelId)?.snippet.thumbnails.high.url as string || ''}
-              channelTitle= {channels.find(channel => channel.id == video.snippet.channelId)?.snippet.title as string || ''} 
+              channelImage={
+                channels[pageIndex] &&
+                channels[pageIndex].items.find(
+                  channel => channel.id == video.snippet.channelId
+                )?.snippet.thumbnails.high.url
+              }
+              channelTitle={
+                channels[pageIndex] &&
+                channels[pageIndex].items.find(
+                  channel => channel.id == video.snippet.channelId
+                )?.snippet.title
+              } 
               duration={video.contentDetails.duration}
               index={index}
               publishedAt={video.snippet.publishedAt}
