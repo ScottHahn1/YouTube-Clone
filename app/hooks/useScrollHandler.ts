@@ -1,6 +1,7 @@
+'use client';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { handleScrollCheck } from '../utils/scroll';
-import { PlaylistsItems } from '../channel/[id]/page';
+import { PlaylistsItems } from '../channel/[name]/[id]/page';
 
 const useScrollHandler = (
   containers: (HTMLDivElement | null)[],
