@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Roboto } from 'next/font/google';
 import "./globals.css";
 import QueryClientContextProvider from "./query-client-provider";
-import NavbarSidebarWrapper from "./NavbarSidebarWrapper";
 import { ThemeProvider } from "./contexts/themeContext";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -29,16 +27,27 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body
-        className={`${roboto.variable} antialiased font-roboto`}
-      >
-        <ThemeProvider>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const storedTheme = localStorage.getItem('theme') || 'light';
+                if (storedTheme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className={`${roboto.variable} antialiased font-roboto`}>
+         <ThemeProvider>
           <QueryClientContextProvider>
-            <NavbarSidebarWrapper />
             {children}
           </QueryClientContextProvider>
-        </ThemeProvider>
+         </ThemeProvider>
       </body>
     </html>
   );
-}
+};
