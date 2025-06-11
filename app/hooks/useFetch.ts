@@ -1,5 +1,6 @@
 'use client';
 import { QueryFunctionContext, useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 const useFetch = <T>(url: string, queryKey: string[], enabled: boolean) => {
     const fetchData = async () => {
@@ -20,6 +21,39 @@ const useFetch = <T>(url: string, queryKey: string[], enabled: boolean) => {
     });
 
     return { data, isLoading, isError, error };
+};
+
+const useFetchWithState = <T>(
+    url: string, 
+    queryKey: string[], 
+    enabled: boolean
+) => {
+    const [allData, setAllData] = useState<T[]>([]);
+
+    const fetchData = async () => {
+        const res = await fetch(url);
+
+        if (!res.ok) {
+            throw new Error(`Error fetching data: ${res.statusText}`);
+        };
+
+        return res.json();
+    };
+      
+    const { data, isLoading, isError, error } = useQuery<T>({
+        queryKey,
+        queryFn: fetchData,
+        enabled: enabled,
+        staleTime: 300000
+    });
+
+    useEffect(() => {
+        if (enabled && data) {
+            setAllData(prev => [...prev, data]);
+        } 
+    }, [enabled, data, setAllData]);
+
+    return [allData, isLoading, isError, error];
 };
 
 const useFetchInfinite = <T extends { nextPageToken: string }>(
@@ -51,7 +85,6 @@ const useFetchInfinite = <T extends { nextPageToken: string }>(
 const useFetchInfiniteWithInitialData = <T extends { nextPageToken: string }>(
   url: string, queryKey: string[], initialData: T
 ) => {
-
     const fetchData = async ({ pageParam = '' }: QueryFunctionContext) => {
         const fullUrl = pageParam ? `${url}&pageToken=${pageParam}` : url;
         const res = await fetch(fullUrl);
@@ -74,8 +107,8 @@ const useFetchInfiniteWithInitialData = <T extends { nextPageToken: string }>(
         },
         staleTime: 300000,
     });
-
+  
     return { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess };
 };
 
-export { useFetch, useFetchInfinite, useFetchInfiniteWithInitialData };
+export { useFetch, useFetchWithState, useFetchInfinite, useFetchInfiniteWithInitialData };
