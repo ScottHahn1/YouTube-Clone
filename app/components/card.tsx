@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 interface Props {
   channelId: string;
-  channelImage: string;
-  channelTitle: string;
+  channelImage?: string;
+  channelTitle?: string;
   duration: string;
   index: number;
   playlistId?: string;
