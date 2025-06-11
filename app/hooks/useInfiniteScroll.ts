@@ -1,3 +1,4 @@
+'use client';
 import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 
@@ -24,7 +25,7 @@ const useInfiniteScroll = <T, >(
 
         if (lastItemRef.current) {
             observer.observe(lastItemRef.current);
-        }
+        };
 
         
         return () => {
@@ -35,6 +36,6 @@ const useInfiniteScroll = <T, >(
     }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
     return lastItemRef;
-}
+};
 
 export default useInfiniteScroll;
