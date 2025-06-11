@@ -26,11 +26,10 @@ interface Props {
 	initialData: PlaylistItems;
 	channelDetails: ChannelDetails;
 	queryKey: string;
-	videosPlaylistId: string;
 	videosQueryParams: string;
 };
 
-const MoreVideos = ({ channelId, initialData, channelDetails, queryKey, videosPlaylistId , videosQueryParams}: Props) => {
+const MoreVideos = ({ channelId, initialData, channelDetails, queryKey, videosQueryParams}: Props) => {
 	const { 
 		data: videos, 
 		isLoading: videosLoading, 
@@ -50,7 +49,7 @@ const MoreVideos = ({ channelId, initialData, channelDetails, queryKey, videosPl
     if (initialData) {
       setShowNavbar(true);
     };
-  }, [initialData]);
+  }, [initialData, setShowNavbar]);
 
 	const videosIds = videos.pages[videos.pages.length - 1].items.map(
 		video => video.snippet.resourceId.videoId
@@ -79,42 +78,40 @@ const MoreVideos = ({ channelId, initialData, channelDetails, queryKey, videosPl
 	};
 
 	return (
-		<>
-			<div className='mx-2 pt-4 grid-cols-2 gap-4 md:mx-0 md:grid md:grid-cols-4 md:pr-4 md:ml-32 lg:grid-cols-3 xl:grid-cols-4 xl:ml-36'>
-	      {
-      		metaData && Array.isArray(metaData) &&
-        		videos.pages.map((page, pageIndex) => page.items.map((video, videoIndex) => (
-          	<Fragment key={video.id}>
-            	<Card 
-	              key={video.id}
-	              channelId={channelId}
-	              channelImage={channelDetails.items[0].snippet.thumbnails.high.url}
-	              channelTitle={channelDetails.items[0].snippet.title} 
-          			duration={
-                	metaData[pageIndex] &&
-          				metaData[pageIndex].items.find(item => item.id == video.snippet.resourceId.videoId)
-          				?.contentDetails.duration as string
-          			}
-	              index={videoIndex}
-	              publishedAt={video.snippet.publishedAt}
-	              title={video.snippet.title}
-	              thumbnail={video.snippet.thumbnails.high.url} 
-	              thumbnailSize='h-36'
-	              videoId={video.contentDetails.videoId}
-	              views={
-                	metaData[pageIndex] &&
-          				metaData[pageIndex].items.find(item => item.id == video.snippet.resourceId.videoId)
-          				?.statistics.viewCount as number
-          			}
-	            />
-          	</Fragment>
-        	)))
-	    	}
+		<div className='mx-2 pt-4 grid-cols-2 gap-4 md:mx-0 md:grid md:grid-cols-4 md:pr-4 md:ml-32 lg:grid-cols-3 xl:grid-cols-4 xl:ml-36'>
+			{
+				metaData && Array.isArray(metaData) &&
+				videos.pages.map((page, pageIndex) => page.items.map((video, videoIndex) => (
+				<Fragment key={video.id}>
+				<Card 
+					key={video.id}
+					channelId={channelId}
+					channelImage={channelDetails.items[0].snippet.thumbnails.high.url}
+					channelTitle={channelDetails.items[0].snippet.title} 
+					duration={
+					metaData[pageIndex] &&
+						metaData[pageIndex].items.find(item => item.id == video.snippet.resourceId.videoId)
+						?.contentDetails.duration as string
+					}
+					index={videoIndex}
+					publishedAt={video.snippet.publishedAt}
+					title={video.snippet.title}
+					thumbnail={video.snippet.thumbnails.high.url} 
+					thumbnailSize='h-36'
+					videoId={video.contentDetails.videoId}
+					views={
+						metaData[pageIndex] &&
+						metaData[pageIndex].items.find(item => item.id == video.snippet.resourceId.videoId)
+						?.statistics.viewCount as number
+					}
+				/>
+				</Fragment>
+				)))
+			}
 
 			<div ref={lastItemRef} />
-	    </div> 
-    </>
-  );
+		</div> 
+  	);
 };
 
 export default MoreVideos;

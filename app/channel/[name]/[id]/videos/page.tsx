@@ -114,7 +114,6 @@ const ChannelVideos = async ({ params }: Props) => {
       initialData={videos} 
       channelDetails={channelDetails} 
       queryKey='channelUploads'
-      videosPlaylistId={videosPlaylistId}
       videosQueryParams={videosQueryParams}
     />
   );
