@@ -46,6 +46,7 @@ const ChannelPlaylists = async ({ params }: Props) => {
           return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='No playlists data found!' />;
         }
     } catch(err) {
+        console.error(err);
         return <Error divClassName="mt-40 md:mt-20 md:ml-36" message="Failed to load playlists!" />;
     };
 

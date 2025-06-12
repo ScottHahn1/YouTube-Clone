@@ -26,6 +26,7 @@ const WatchVideo = async ({ playlistId, videoId }: Props) => {
       'No video data found!'
     );
   } catch(err) {
+    console.error(err);
     return <Error divClassName='mt-40 md:mt-20' message='Failed to load data for video!' />;
   };
 
@@ -42,6 +43,7 @@ const WatchVideo = async ({ playlistId, videoId }: Props) => {
       'Error loading channel!'
     );
   } catch(err) {
+    console.error(err);
     return <Error divClassName='mt-40 md:mt-20' message='Failed to load channel info!' />;
   };
 

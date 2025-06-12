@@ -52,7 +52,8 @@ const SearchPage = async ({ params }: Props) => {
             'Failed to fetch search data!'
         );
     } catch (err) {
-        return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='Error while searching!' />;
+        console.error(err);
+        return <Error divClassName='mt-40 md:mt-16 md:ml-32' message='Error while searching!' />;
     };
 
     return (

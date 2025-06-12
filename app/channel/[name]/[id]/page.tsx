@@ -59,7 +59,7 @@ const ChannelHome = async ({ params }: Props) => {
       'Error loading channel sections!'
     );
   } catch(err) {
-    console.log(err);
+    console.error(err);
     return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='Error loading channel sections!' />;
   };
 
@@ -79,7 +79,7 @@ const ChannelHome = async ({ params }: Props) => {
       'Error loading channel sections!'
     );
   }  catch(err) {
-    console.log(err);
+    console.error(err);
     return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='Error loading channel sections!' />
   };
 
@@ -89,6 +89,7 @@ const ChannelHome = async ({ params }: Props) => {
       'Error loading channel sections!'
     );
   } catch(err) {
+    console.error(err);
     return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='Error loading channel sections!' />
   };
 

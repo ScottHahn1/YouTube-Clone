@@ -84,6 +84,7 @@ const ChannelVideos = async ({ params }: Props) => {
       'Error loading videos!'
     );
   } catch(err) {
+    console.error(err);
     return <Error divClassName='mt-40 md:mt-20 md:ml-36' message="Failed to load channel info!" />;
   };
 
@@ -101,6 +102,7 @@ const ChannelVideos = async ({ params }: Props) => {
       'No video data found!'
     );
   } catch(err) {
+    console.error(err);
     return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='Failed to load data for videos!' />;
   };
 

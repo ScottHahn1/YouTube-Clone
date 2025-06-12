@@ -30,6 +30,7 @@ const RelatedVideos = async ({ videoCategoryId }: Props) => {
             'Error loading videos!'
         );
     } catch (err) {
+        console.error(err);
         return <Error divClassName='' message='Error loading videos!' />;
     };
 

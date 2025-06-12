@@ -13,7 +13,8 @@ export async function GET(req: Request) {
 
       const data = await response.json();
       return NextResponse.json(data, { status: 200 });
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     };
 };

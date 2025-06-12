@@ -25,6 +25,7 @@ const Category = async ({ params }: Props) => {
           'Error loading videos!'
         );
     } catch (err) {
+        console.error(err);
         return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='Error loading videos!' />;
     };
 
