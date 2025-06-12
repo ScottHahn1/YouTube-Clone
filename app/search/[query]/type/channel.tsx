@@ -9,44 +9,44 @@ interface Channel {
         thumbnails: { 
             high: {
                 url: string;
-            }
-        }
-    }
-}
+            };
+        };
+    };
+};
 
 interface Props {
     channel: Channel;
-}
+};
 
 const SearchChannel = ({ channel }: Props) => {
     return (
-        <div className='flex w-9/12'>
-            <div className='w-40% bg-orange-400'>
-                <div className='relative w-40% h-40 m-auto'>
+        <div className='flex justify-end items-center md:justify-around my-8'>
+            <div className='w-16 md:w-24'>
+                <div className='relative h-16 md:h-24'>
                     <Image 
-                        className='p-1 rounded-2xl object-cover' 
-                        layout='fill'
-                        src={channel.snippet.thumbnails.high.url} 
-                        alt={`${channel.snippet.channelTitle}'s thumbnail`} 
+                        className='rounded-full object-cover'
+                        fill
+                        src={channel.snippet.thumbnails.high.url}
+                        alt={`${channel.snippet.channelTitle}'s thumbnail`}
                     />
                 </div>
             </div>
 
-            <div className='w-40% bg-green-700'>
-                <p>{channel.snippet.channelTitle}</p>
-                <p></p>
-                <p>{channel.snippet.description}</p>
+            <div className='w-2/5 text-center '>
+                <p className='font-semibold line-clamp-2'>{channel.snippet.channelTitle}</p>
+                <span className='hidden md:block'>
+                    <p className='line-clamp-2 text-sm'>{channel.snippet.description}</p>
+                </span>
             </div>
 
             <Button 
-                children={
-                    <p>Subscribe</p>
-                } 
-                className='rounded-md p-4' 
+                className='rounded-full px-2 bg-charcoal dark:bg-white text-white dark:text-black h-10 xl:px-4' 
                 handleClick={() => console.log('Subscribed!')} 
-            />
+            >
+                <p>Subscribe</p>
+            </Button>
         </div>
-    )
-}
+    );
+};
 
 export default SearchChannel;
