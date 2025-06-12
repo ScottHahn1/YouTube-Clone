@@ -1,32 +1,13 @@
-import { useFetch } from '@/app/hooks/useFetch';
 import { formatDate, formatNumbers } from '@/app/utils/formatter';
-import { InfiniteData } from '@tanstack/react-query';
 import Image from 'next/image';
 
-interface Channels {
-    id: string;
-    snippet: {
-        thumbnails: {
-            high: {
-              url: string;
-            }
-        }
-    }
-}
-
-
-interface SearchResults {
-    items: {
-        id: { videoId: string };
-    }[]
-}
-
-interface Video {
+export interface Video {
     id: {
         kind: string;
         videoId: string;
     },
     snippet: {
+        categoryId: string;
         channelId: string;
         channelTitle: string;
         description: string;
@@ -39,70 +20,80 @@ interface Video {
         title: string;
     },
     statistics: {
+        commentCount: number;
+        likeCount: number;
         viewCount: number;
-    }
-}
-
-interface VideosStats {
-    items: {
-        statistics: {
-            viewCount: number;
-        }
-    }[]
-}
+    };
+};
 
 interface Props {
-    channels: Channels[];
-    searchResults: InfiniteData<SearchResults, unknown> | undefined; 
+    channelImage: string | undefined;
     video: Video;
-}
+    views: number | undefined;
+};
 
-const SearchVideo = ({ channels, searchResults, video }: Props ) => {
-    const videosQueryParams = new URLSearchParams({
-        'id': searchResults?.pages.length ? 
-            searchResults?.pages[searchResults.pages.length - 1].
-            items.map(page => page.id.videoId).toString() 
-            : ''
-        ,
-        'maxResults': '30',
-        'part': 'snippet, statistics',
-    }).toString();
-
-    const { data: videosStats } = useFetch<VideosStats>(`/api/videos?${videosQueryParams}`, ['searchVideosStats'], !!searchResults);
-
+const SearchVideo = ({ channelImage, video, views }: Props ) => {
+    if (!channelImage || !video || !views) {
+        return null;
+    };
+  
     return (
-        <div>
-            {
-                videosStats && videosStats.items.length > 0 &&
-                <div key={video.id.videoId} className='bg-orange-800 w-9/12 flex'>
-                    <div className='relative w-1/2 h-72 bg-yellow-300'>
-                        <Image 
-                            className='p-1 rounded-2xl object-cover' 
-                            layout='fill'
-                            src={video.snippet.thumbnails.high.url} 
-                            alt={`${video.snippet.title} video thumbnail`} 
-                        />
-                    </div>
+        <div className='flex flex-col md:flex-row'>
+            <div className='relative h-44 md:w-1/2 lg:h-56 xl:w-[45%] xl:h-64'>
+                <Image
+                    className='object-cover md:rounded-2xl'
+                    fill
+                    src={video.snippet.thumbnails.high.url}
+                    alt={`${video.snippet.title} video thumbnail`}
+                />
+            </div>
 
-                    <div className='pb-4 w-1/2'>
-                        <p className='text-ellipsis'>{video.snippet.title}</p>
-                        <div className='flex gap-1 items-center'>
-                            {/* <span>{formatNumbers(videosStats?.items[index].statistics.viewCount)} views</span> */}
-                            <p>{video.id.kind}</p>
-                            <span className='text-4xl leading-none align-baseline mb-1'>&#x00B7;</span>
-                            <span>{formatDate(video.snippet.publishedAt)}</span>
-                        </div>
-                        <div className='flex gap-2 items-center'>
-                            <Image className='rounded-full w-8 h-8' src={channels.filter(channel => channel.id === video.snippet.channelId)[0].snippet.thumbnails.high.url} width={30} height={30} alt={`${video.snippet.channelTitle}'s channel image`} /> 
-                            <p>{video.snippet.channelTitle}</p>
-                        </div>
-
-                        <p>{video.snippet.description}</p>
-                    </div>
+            <div className='ml-2 mt-2 flex gap-1 md:w-1/2 md:mt-0'>
+                <div className='relative w-9 h-9 shrink-0 md:hidden'>
+                    <Image 
+                        className='rounded-full object-cover' 
+                        fill
+                        src={
+                            channelImage
+                        } 
+                        alt={`${video.snippet.channelTitle}'s channel image`} 
+                    /> 
                 </div>
-            }
+
+                <div className='w-full flex flex-col md:gap-2 lg:gap-3'>
+                    <p className='text-ellipsis font-semibold xl:text-lg'>{video.snippet.title}</p>
+                    <p className='md:hidden'>{video.snippet.channelTitle}</p>
+
+                    <div className='flex items-center gap-1'>
+                        <span>
+                            {formatNumbers(views)} views
+                        </span>
+                        <span className='text-3xl'>&#x00B7;</span>
+                        <span>{formatDate(video.snippet.publishedAt)}</span>
+                    </div>
+
+                    <div className='hidden gap-2 items-center md:flex'>
+                        <div className='relative w-7 h-7 shrink-0'>
+                            <Image 
+                                className='rounded-full object-cover' 
+                                fill
+                                src={
+                                    channelImage
+                                } 
+                                alt={`${video.snippet.channelTitle}'s channel image`} 
+                            /> 
+                        </div>
+
+                        <p>{video.snippet.channelTitle}</p>
+                    </div>
+
+                    <p className='hidden text-xs md:block lg:text-sm'>
+                        {video.snippet.description}
+                    </p>
+                </div>
+            </div>
         </div>
-    )
-}
+    );
+};
 
 export default SearchVideo;
