@@ -1,17 +1,16 @@
-'use client';
-import { useFetchInfinite } from "@/app/hooks/useFetch";
-import useChannels from "@/app/hooks/useChannels";
-import { use } from 'react';
-import SearchVideo from './type/video';
-import SearchChannel from './type/channel';
+import SearchUI from "./searchUI";
+import Error from "@/app/components/Error";
+import fetchData from "@/app/utils/fetchData";
 
-interface Search {
+export interface SearchResult {
     items: {
         id: {
             kind: string;
+            channelId: string;
             videoId: string;
-        }
+        };
         snippet: {
+            categoryId: string;
             channelId: string;
             channelTitle: string;
             description: string;
@@ -20,53 +19,51 @@ interface Search {
                 high: {
                     url: string;
                 }
-            }
+            };
             title: string;
-        },
+        };
         statistics: {
+            commentCount: number;
+            likeCount: number;
             viewCount: number;
         }
     }[],
     nextPageToken: string;
-}
+};
 
 interface Props {
     params: Promise<{ query: string }>
-}
+};
 
-const SearchPage = ({ params }: Props) => {
-    const { query } = use(params);
+const SearchPage = async ({ params }: Props) => {
+    const { query } = await params;
+
+    let searchResults: SearchResult | null = null;
 
     const searchQueryParams = new URLSearchParams({
         'maxResults': '30',
         'part': 'snippet',
-        'q': query as string
+        'q': query,
     }).toString();
-      
-    const { data: searchResults, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchInfinite<Search>(`/api/search?${searchQueryParams}`, ['search']);
 
-    const channels = useChannels(searchResults?.pages.length ?
-        searchResults?.pages[searchResults.pages.length - 1].
-        items.map(page => page.snippet.channelId) 
-        : []
-    );
+    try {
+        searchResults = await fetchData<SearchResult>(
+            `${process.env.API_URL}/api/search?${searchQueryParams}`, 
+            'Failed to fetch search data!'
+        );
+    } catch (err) {
+        return <Error divClassName='mt-40 md:mt-20 md:ml-36' message='Error while searching!' />;
+    };
 
     return (
-        <div className='ml-52'>
-            {
-                channels.length > 0 &&
-                searchResults?.pages.map(page => (
-                    page.items.map(result => (
-                        result.id.kind === 'youtube#video' ?
-                        <SearchVideo channels={channels} searchResults={searchResults} video={result} />
-                        :
-                        result.id.kind === 'youtube#channel' &&
-                        <SearchChannel channel={result} />
-                    ))
-                ))
-            }
+        <div className='mt-4 mx-2 flex flex-col md:ml-32 md:gap-4 lg:ml-40 xl:w-4/5'>
+            <SearchUI 
+                initialData={searchResults}
+                searchQueryParams={searchQueryParams}
+                searchQuery={query}
+            />
         </div>
-    )
-}
+    );
+};
 
 export default SearchPage;
