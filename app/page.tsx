@@ -39,7 +39,8 @@ export default async function Home() {
   try {
     videos = await fetchData<Videos>(
       `${process.env.API_URL}/api/videos?${videosQueryParams}`, 
-      'Error loading videos!'
+      'Error loading videos!',
+      { cache: 'no-store' }
     );
   } catch (err) {
     console.error(err);
