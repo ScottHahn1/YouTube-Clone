@@ -32,12 +32,14 @@ const ChannelHeader = () => {
     <header className='mx-1 mt-2 relative md:ml-32 xl:ml-36'>
       <div className='flex flex-col gap-2 md:gap-4'>
         <div className='relative object-fill h-28 md:h-48 lg:w-90%'>
-          <Image
-            className='rounded-3xl' 
-            fill
-            src={channel.items[0].brandingSettings.image.bannerExternalUrl + bannerParams}
-            alt={`${channel.items[0].snippet.title}'s banner image`}
-          />
+            { channel.items[0].brandingSettings.image &&
+                <Image
+                    className='rounded-3xl' 
+                    fill
+                    src={channel.items[0].brandingSettings.image.bannerExternalUrl + bannerParams}
+                    alt={`${channel.items[0].snippet.title}'s banner image`}
+                />
+            }
         </div>
 
         <div className='flex flex-col text-sm md:text-base md:flex-row md:gap-4 lg:w-90%'>
